@@ -1,0 +1,139 @@
+﻿@model IEnumerable<CarScope.Models.BankAccount>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    #viewContent {
+        padding-left: 20px;
+    }
+
+        #viewContent select, #viewContent button {
+            font-size: 25px;
+        }
+
+        #viewContent h4 {
+            margin: 10px 0;
+        }
+
+        #viewContent .textAlignCenter {
+            text-align: center;
+        }
+
+            #viewContent .textAlignCenter img {
+                display: none;
+                width: 100px;
+            }
+
+        #viewContent #message table {
+            width: 100%;
+        }
+
+            #viewContent #message table th {
+                text-align: left;
+                text-decoration: underline;
+            }
+</style>
+<select id="citySelect">
+    <option value="Select">Select</option>
+    <option value="5128581">New York</option>
+    <option value="5391959">San Francisco</option>
+    <option value="London">London</option>
+    <option value="1275339">Mumbai</option>
+    <option value="8199396">Santa Lucia</option>
+</select>
+
+<button id="submit">Submit</button>
+<div class="textAlignCenter">
+    <img src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/images/ajax-loader.gif" />
+</div>
+<div id="message"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#submit").click(function (e) {
+            var validate = Validate();
+            $("#message").html(validate);
+            if (validate.length == 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "https://api.openweathermap.org/data/2.5/weather?id=" + $("#citySelect").val() + "&appid=2efe69b302d9dc2ac48cd97fb8043dad",
+                    dataType: "json",
+                    success: function (result, status, xhr) {
+                        var table = $("<table><tr><th>Weather Description</th></tr>");
+
+                        table.append("<tr><td>City:</td><td>" + result["name"] + "</td></tr>");
+                        table.append("<tr><td>Country:</td><td>" + result["sys"]["country"] + "</td></tr>");
+                        table.append("<tr><td>Current Temperature:</td><td>" + result["main"]["temp"] + "°C</td></tr>");
+                        table.append("<tr><td>Humidity:</td><td>" + result["main"]["humidity"] + "</td></tr>");
+                        table.append("<tr><td>Weather:</td><td>" + result["weather"][0]["description"] + "</td></tr>");
+
+                        $("#message").html(table);
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+                    }
+                });
+            }
+        });
+
+        $(document).ajaxStart(function () {
+            $("img").show();
+        });
+
+        $(document).ajaxStop(function () {
+            $("img").hide();
+        });
+
+        function Validate() {
+            var errorMessage = "";
+            if ($("#citySelect").val() == "Select") {
+                errorMessage += "► Select City";
+            }
+            return errorMessage;
+        }
+    });
+</script>
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableBal)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailableBal)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Create" asp-controller="InterBankTransfers" asp-route-id="@item.ID">Transfer</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

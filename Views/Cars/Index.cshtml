@@ -1,0 +1,63 @@
+﻿@model IEnumerable<CarScope.Models.Car>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .buttonload {
+        /*background-color: #4CAF50;*/ /* Green background */
+        border: none; /* Remove borders */
+        /*color: white;*/ /* White text */
+        padding: 15px;
+        /*padding: 12px 24px;*/ /* Some padding */
+        font-size: 16px; /* Set a font-size */
+        transition: transform .2s; /* Animation */
+    }
+        .buttonload:hover {
+            transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+    /* Add a right margin to each icon */
+    .fa {
+        margin-left: -12px;
+        margin-right: 8px;
+    }
+</style>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="row">
+    
+    @foreach (var item in Model)
+    {
+
+        <div class="col-sm-4">
+            <h4 style="border-radius: 3px;border:1px solid blue;margin-top:18px;padding: 10px;color: navy">@Html.DisplayFor(modelItem => item.Brand)</h4>
+            <div class="card" style="background-color: #FDF8F5;">
+                <div class="card-body">
+
+                    <p class="card-text"> @Html.DisplayFor(modelItem => item.Color)</p>
+                    <p class="card-text" style="text-align: justify;">  @Html.DisplayFor(modelItem => item.Description)</p>
+                    <p class="card-text">
+                        @Html.DisplayFor(modelItem => item.ShipmentDate)
+                    </p>
+                    
+                    <div>
+                        <a class="btn btn-outline-primary buttonload" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-spinner fa-spin"></i>Edit</a>
+                        <a class="btn btn-outline-primary buttonload" asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-spinner fa-spin"></i>Details</a>
+                        <a class="btn btn-outline-primary buttonload" asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-spinner fa-spin"></i>Delete</a>
+
+                    </div>
+
+                    <div style="padding-top:10px"><p style="color: black">@Html.DisplayFor(modelItem => item.ID)</p></div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+</div>
+
+
