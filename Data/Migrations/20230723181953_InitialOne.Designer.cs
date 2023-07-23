@@ -4,14 +4,16 @@ using CarScope.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarScope.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230723181953_InitialOne")]
+    partial class InitialOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,21 +45,21 @@ namespace CarScope.Data.Migrations
                         new
                         {
                             ID = 1,
-                            AccNo = "PL14429",
+                            AccNo = "PL17234",
                             AvailableBal = 1000m,
                             Name = "Isaac Newton"
                         },
                         new
                         {
                             ID = 2,
-                            AccNo = "PL17271",
+                            AccNo = "PL13487",
                             AvailableBal = 1200m,
                             Name = "John Doe"
                         },
                         new
                         {
                             ID = 3,
-                            AccNo = "PL17471",
+                            AccNo = "PL19531",
                             AvailableBal = 600m,
                             Name = "Micheal Faraday"
                         });
